@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
+const { SYSTEM_PROMPT } = require("../prompt");
 require("dotenv").config();
 
 const app = express();
@@ -35,7 +36,7 @@ app.post("/api/chat", async (req, res) => {
   try {
     let response;
     let data;
-    
+    const prompt = SYSTEM_PROMPT(problemName, userMessage)
     // Try each model until one succeeds or all models are exhausted
     for (const model of models) {
       response = await fetchFromModel(model, userMessage);
@@ -64,7 +65,7 @@ app.post("/api/chat", async (req, res) => {
 });
 
 // Helper function to fetch data from a model
-const fetchFromModel = async (model, userMessage, problemName) => {
+const fetchFromModel = async (model, prompt) => {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
