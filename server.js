@@ -64,7 +64,7 @@ app.post("/api/chat", async (req, res) => {
 });
 
 // Helper function to fetch data from a model
-const fetchFromModel = async (model, userMessage) => {
+const fetchFromModel = async (model, userMessage, problemName) => {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -81,7 +81,7 @@ const fetchFromModel = async (model, userMessage) => {
             content: [
               {
                 type: "text",
-                text: userMessage || "How are you?"
+                text: prompt || "How are you?"
               }
             ]
           }
